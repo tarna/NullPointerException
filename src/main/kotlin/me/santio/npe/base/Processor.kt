@@ -74,8 +74,7 @@ abstract class Processor(
         extra: Component? = null,
         data: FlagData.() -> Unit = {}
     ) {
-        val player = event.getPlayer<Player>()
-        if (player == null) return
+        val player = event.getPlayer<Player>() ?: return
 
         val resolution = resolution(resolution)
         if (resolution.shouldCancel && !player.npe.bypassing()) event.isCancelled = true

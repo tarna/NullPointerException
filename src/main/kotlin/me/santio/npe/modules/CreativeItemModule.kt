@@ -19,6 +19,7 @@ import me.santio.npe.ruleset.item.GenericItemRule
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.GameMode
 import org.bukkit.entity.Player
 
 @AutoService(Processor::class)
@@ -65,6 +66,14 @@ class CreativeItemModule: Module(
 
         val item = wrapper.itemStack
         val player = event.getPlayer<Player>()
+
+        if (player.gameMode != GameMode.CREATIVE) {
+            return flag(
+                event,
+                Resolution.KICK,
+                clickEvent = ClickEvent.copyToClipboard(item.toString())
+            )
+        }
 
         if (player.npe.debugging("item-spawns") && !item.isEmpty) {
             player.npe.sendDebug(PacketInspection.readItem(item.copy()), chat = true)
